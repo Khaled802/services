@@ -19,17 +19,24 @@ class BaseService(models.Model):
         abstract = True
 
     @classmethod
-    def get_by_location(cls, location):
+    def get_all_services_by_location(cls, location):
         '''
         it get all services as dict
         key: the service
         value: is the object that match location
         '''
         result = {}
-        for childs in cls.__subclasses__():
-            print(location)
-            result[childs] = childs.objects.filter(location__icontains=location)
+        # child is the subclass of services that mean it is service
+        for child in cls.__subclasses__():
+            result[child] = child.get_by_location(location)
         return result
+
+    @classmethod
+    def get_by_location(cls, location):
+        '''
+        it is used with the service not services
+        '''
+        return cls.objects.filter(location__icontains=location)
     
     def __str__(self) -> str:
         return f'Service {self.__class__.__name__}: {self.name}'

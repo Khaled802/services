@@ -35,6 +35,9 @@ class BankViewList(generics.ListAPIView):
     queryset = Bank.objects.all()
     serializer_class = BankSerializer
 
+    def get_queryset(self):
+        return Bank.get_by_location(self.request.data.get('location', 'egypt'))
+
 
 class BankViewObject(generics.RetrieveAPIView):
     queryset = Bank.objects.all()

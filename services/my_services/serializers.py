@@ -82,7 +82,7 @@ class SevicesSerializer:
         location_serializer.is_valid(raise_exception=True)
 
         # get all services that contains location like input
-        services = BaseService.get_by_location(location_serializer.validated_data['location'])
+        services = BaseService.get_all_services_by_location(location_serializer.validated_data['location'])
         serialized_services = {}
         for service, objects in services.items():
             serializer = cls.serialize_service(service, objects)
